@@ -81,12 +81,16 @@ public class Family {
     public void addChild(Human child){
         Human[] tempArray;
         tempArray = new Human[this.getChildren().length + 1];
+        for(int i = 0; i < this.getChildren().length; i++){
+            tempArray[i] = this.getChildren()[i];
+        }
 
         tempArray[this.getChildren().length] = child;
         this.setChildren(tempArray);
         child.setMother(this.mother);
         child.setFather(this.father);
         child.setPet(this.pet);
+        this.deleteChild(null);
     }
 
     public boolean deleteChild(int index) {
@@ -111,20 +115,23 @@ public class Family {
 
 
     public void deleteChild(Human child){
+        int minus = 0;
         for(int i = 0; i < this.getChildren().length; i++){
+            if(this.getChildren()[i] == null){
+                minus++;
+                continue;
+            }
             if(this.getChildren()[i].equals(child)) {
+                minus++;
                 this.getChildren()[i] = null;
-                this.getChildren()[i].setMother(null);
-                this.getChildren()[i].setFather(null);
-                this.getChildren()[i].setPet(null);
-                this.getChildren()[i].setFamily(null);
             }
         }
-        Human[] tempArray = new Human[this.getChildren().length - 1];
+        Human[] tempArray = new Human[this.getChildren().length - minus];
         for (int i = 0, j = 0; i < this.getChildren().length; i++) {
             if (this.getChildren()[i] != null) tempArray[j++] = this.getChildren()[i];
         }
         this.setChildren(tempArray);
+
     }
 
     public int countFamily() {

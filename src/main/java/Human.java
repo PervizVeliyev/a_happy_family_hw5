@@ -1,4 +1,3 @@
-import java.util.Arrays;
 import java.util.Objects;
 import java.util.Random;
 
@@ -105,8 +104,23 @@ public class Human {
         this.father = father;
     }
 
-    public String[][] getSchedule() {
-        return schedule;
+    public String getSchedule() {
+        if(schedule == null) return "There's no schedule";
+        StringBuilder sb = new StringBuilder("");
+        for(int i = 0; i < schedule[0].length; i++){
+            for(int j = 0; j < schedule.length; j++){
+                if(j == 0) {
+                    sb.append("[" + schedule[j][i] + ", ");
+                }
+                else if(i == schedule[0].length - 1 && j == schedule.length - 1){
+                    sb.append(schedule[j][i] + "]");
+                }
+                else {
+                    sb.append(schedule[j][i] + "], ");
+                }
+            }
+        }
+        return sb.toString();
     }
 
     public void setSchedule(String[][] schedule) {
@@ -128,7 +142,7 @@ public class Human {
                 ", surname='" + surname + '\'' +
                 ", year=" + year +
                 ", iq=" + iq +
-                ", schedule=" + Arrays.toString(schedule) +
+                ", schedule=" + this.getSchedule() +
                 '}';
     }
 
