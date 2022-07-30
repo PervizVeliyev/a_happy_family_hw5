@@ -87,9 +87,7 @@ public class Family {
 
         tempArray[this.getChildren().length] = child;
         this.setChildren(tempArray);
-        child.setMother(this.mother);
-        child.setFather(this.father);
-        child.setPet(this.pet);
+        child.setFamily(this);
         this.deleteChild(null);
     }
 
@@ -100,9 +98,6 @@ public class Family {
             for (int i = 0, j = 0; i < this.getChildren().length; i++) {
                 if (i != index) tempArray[j++] = this.getChildren()[i];
             }
-            this.getChildren()[index].setMother(null);
-            this.getChildren()[index].setFather(null);
-            this.getChildren()[index].setPet(null);
             this.getChildren()[index].setFamily(null);
             this.setChildren(tempArray);
 
@@ -122,6 +117,7 @@ public class Family {
                 continue;
             }
             if(this.getChildren()[i].equals(child)) {
+                child.setFamily(null);
                 minus++;
                 this.getChildren()[i] = null;
             }

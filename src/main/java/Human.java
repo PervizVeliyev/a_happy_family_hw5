@@ -6,9 +6,6 @@ public class Human {
     private String surname;
     private int year;                   //date of birth
     private int iq;
-    private Pet pet;
-    private Human mother;
-    private Human father;
     private String[][] schedule;
     private Family family;
 
@@ -26,22 +23,11 @@ public class Human {
         this.year = year;
     }
 
-    public Human(String name, String surname, int year, Human mother, Human father) {
-        this.name = name;
-        this.surname = surname;
-        this.year = year;
-        this.mother = mother;
-        this.father = father;
-    }
-
-    public Human(String name, String surname, int year, int iq, Pet pet, Human mother, Human father, String[][] schedule) {
+    public Human(String name, String surname, int year, int iq, String[][] schedule) {
         this.name = name;
         this.surname = surname;
         this.year = year;
         this.iq = iq;
-        this.pet = pet;
-        this.mother = mother;
-        this.father = father;
         this.schedule = schedule;
     }
 
@@ -80,29 +66,6 @@ public class Human {
         this.iq = iq;
     }
 
-    public Pet getPet() {
-        return pet;
-    }
-
-    public void setPet(Pet pet) {
-        this.pet = pet;
-    }
-
-    public Human getMother() {
-        return mother;
-    }
-
-    public void setMother(Human mother) {
-        this.mother = mother;
-    }
-
-    public Human getFather() {
-        return father;
-    }
-
-    public void setFather(Human father) {
-        this.father = father;
-    }
 
     public String getSchedule() {
         if(schedule == null) return "There's no schedule";
@@ -136,6 +99,19 @@ public class Human {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Human human = (Human) o;
+        return year == human.year && iq == human.iq && name.equals(human.name) && surname.equals(human.surname) && Objects.equals(family, human.family);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, surname, year, iq, family);
+    }
+
+    @Override
     public String toString() {
         return "Human{" +
                 "name='" + name + '\'' +
@@ -146,42 +122,30 @@ public class Human {
                 '}';
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Human human = (Human) o;
-        return name.equals(human.name) && surname.equals(human.surname) && Objects.equals(mother, human.mother) && Objects.equals(father, human.father);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(name, surname, mother, father);
-    }
 
     public void greetPet(){
-        System.out.printf("Hello, %s!\n", pet.getNickname());
+        System.out.printf("Hello, %s!\n", family.getPet().getNickname());
     }
     public void describePet(){
         String message;
-        if(pet.getAge() > 50) message = "very sly";
+        if(family.getPet().getAge() > 50) message = "very sly";
         else message = "almost not sly";
-        System.out.printf("I have a %s, he is %d years old, he is %s.\n",pet.getSpecies(),pet.getAge(),message);
+        System.out.printf("I have a %s, he is %d years old, he is %s.\n",family.getPet().getSpecies(),family.getPet().getAge(),message);
     }
     public boolean feedPet(boolean isItTimeForFeeding){
         Random random =new Random();
         int randomNumber = random.nextInt(1,101);
         if (isItTimeForFeeding) {
-            System.out.printf("Hm... I will feed %s's %s.%n",this.name,this.pet.getSpecies());
+            System.out.printf("Hm... I will feed %s's %s.%n",this.name,this.family.getPet().getSpecies());
             return true;
         }
         else {
-            if(this.pet.getTrickLevel() > randomNumber){
-                System.out.printf("Hm... I will feed %s's %s.%n",this.name,this.pet.getSpecies());
+            if(this.family.getPet().getTrickLevel() > randomNumber){
+                System.out.printf("Hm... I will feed %s's %s.%n",this.name,this.family.getPet().getSpecies());
                 return true;
             }
             else {
-                System.out.printf("I think %s's %s is not hungry.%n",this.name,this.pet.getSpecies());
+                System.out.printf("I think %s's %s is not hungry.%n",this.name,this.family.getPet().getSpecies());
                 return false;
             }
         }
